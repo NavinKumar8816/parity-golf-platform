@@ -1,0 +1,22 @@
+{
+  "entities": {
+    "Score": {
+      "title": "Score",
+      "description": "A performance score logged by an athlete.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "format": "uuid" },
+        "user_id": { "type": "string", "format": "uuid" },
+        "score": { "type": "integer", "description": "The score value (1-45)" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "score"]
+    }
+  },
+  "firestore": {
+    "scores": {
+      "schema": "Score",
+      "description": "Historical scores logged by users."
+    }
+  }
+}
