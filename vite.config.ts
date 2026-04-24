@@ -13,7 +13,23 @@ export default defineConfig({
   },
 
   server: {
-    port: 5173,
-    open: true,
+  port: 5173,
+  open: true,
+  proxy: {
+    "/api": "http://localhost:3000",
   },
+},
+
+  build: {
+  rollupOptions: {
+    output: {
+      manualChunks: {
+        vendor: ['react', 'react-dom'],
+        charts: ['recharts'],
+        ui: ['lucide-react', 'motion'],
+      },
+    },
+  },
+},
+
 })

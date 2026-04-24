@@ -1,14 +1,16 @@
+import { createClient } from "@supabase/supabase-js";
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
+import helmet from "helmet";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { createClient } from "@supabase/supabase-js";
-import dotenv from "dotenv";
 
 dotenv.config();
 
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // Use Service Role for sensitive admin checks
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 async function startServer() {
@@ -16,6 +18,15 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+  app.use(helmet());
+  app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
   // --- ADMIN MIDDLEWARE ---
   const requireAdmin = async (req: any, res: any, next: any) => {
